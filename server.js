@@ -1,7 +1,7 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-var mongojs = require("mongojs");
+
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
 // It works on the client and on the server
@@ -11,7 +11,7 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./models");
 
-var PORT = process.env.PORT || 3000;
+var PORT = 3000;
 
 // Initialize Express
 var app = express();
@@ -27,21 +27,19 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-var MONGODB_URI = process.env.MONGODB_URI || 
-mongoose.connect("mongodb://localhost/yahoo-news", { useNewUrlParser: true });;
+mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
 
-// mongoose.connect(MONGODB_URI);
 // Routes
 
 // A GET route for scraping the echoJS website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
-  axios.get("https://www.yahoo.com/news/").then(function(response) {
+  axios.get("http://www.echojs.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
-    // Now, we grab every h3 within a div tag, and do the following:
-    $("div h3").each(function(i, element) {
+    // Now, we grab every h2 within an article tag, and do the following:
+    $("article h2").each(function(i, element) {
       // Save an empty result object
       var result = {};
 
@@ -53,7 +51,6 @@ app.get("/scrape", function(req, res) {
         .children("a")
         .attr("href");
 
-      console.log("Result: ", result);
       // Create a new Article using the `result` object built from scraping
       db.Article.create(result)
         .then(function(dbArticle) {
@@ -88,9 +85,9 @@ app.get("/articles", function(req, res) {
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function(req, res) {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-  db.Article.findOne({ 
-    "_id": mongojs.ObjectId(req.params.id)
-   })
+  db.Article.findOne({ _id: req.params.id })
+    // ..and populate all of the notes associated with it
+    .populate("note")
     .then(function(dbArticle) {
       // If we were able to successfully find an Article with the given id, send it back to the client
       res.json(dbArticle);

@@ -1,51 +1,49 @@
 <!DOCTYPE html>
 <html lang="en-us">
-
-<head>
-  <meta charset="UTF-8">
-  <title>All The News Thats Fit To Scrape</title>
-
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-  <link rel="stylesheet" href="./assets/css/styles.css">
-  <link rel="stylesheet" href="./assets/css/navbar.css">
-
-</head>
-
-<body>
-
-  <body data-spy="scroll" data-target=".navbar-fixed-top">
-
-    <!-- Display a Bootstrap Nav bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-      <a class="navbar-brand">Scrape-Tastic Tool</a>
-
-      <!-- Navbar Links -->
-      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-        <div class="nav justify-content-end">
-          <!--<a class="nav-item nav-link" href="https://glacial-savannah-12880.herokuapp.com/articles">View Articles</a>
-          <a class="nav-item nav-link" href="https://glacial-savannah-12880.herokuapp.com/scrape">Scrape New
-            Articles</a>
-          <a class="nav-item nav-link active" href="https://glacial-savannah-12880.herokuapp.com/">Home</a>-->
-          <a class="nav-item nav-link" href="http://localhost:3000/articles">View Articles</a>
-            <a class="nav-item nav-link" href="http://localhost:3000/scrape">Scrape New Articles</a>
-            <a class="nav-item nav-link active" href="http://localhost:3000/">Home</a>
-
-        </div>
-      </div>
-    </nav>
-
+  <head>
+    <meta charset="UTF-8">
+    <title>Scraping With Mongoose</title>
+    <style>
+      body { background-color: #F2F6D0 }
+      #wrapper {
+        width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 5%;
+      }
+      #articles {
+        display: inline-block;
+        overflow: auto;
+        width: 60%;
+        height: 700px;
+      }
+      #notes {
+        float: right;
+        width: 30%;
+      }
+      textarea, input {
+        display: block;
+        width: 100%;
+        background-color: #FCF5C7;
+      }
+      input {
+        height: 36px;
+        font-size: 24px;
+      }
+      textarea {
+        height: 200px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
     <div id="wrapper">
-      <h2><i>Scraping The News That You Can Use</i></h2>
-      <br>
-      <h4><i>Click on an article to add a note</i></h4>
+      <h1>Note Scraper</h1>
+      <h2><i>If you can do this...the homework should be no problem.</i></h2>
       <div id="articles"></div>
       <div id="notes"></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="app.js"></script>
   </body>
-
 </html>
