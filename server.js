@@ -1,7 +1,7 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-
+var mongojs = require("mongojs");
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
 // It works on the client and on the server
@@ -27,9 +27,10 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+var MONGODB_URI = process.env.MONGODB_URI || 
+mongoose.connect("mongodb://localhost/yahoo-news", { useNewUrlParser: true });;
 
-mongoose.connect(MONGODB_URI);
+// mongoose.connect(MONGODB_URI);
 // Routes
 
 // A GET route for scraping the echoJS website
@@ -87,9 +88,9 @@ app.get("/articles", function(req, res) {
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function(req, res) {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-  db.Article.findOne({ _id: req.params.id })
-    // ..and populate all of the notes associated with it
-    .populate("note")
+  db.Article.findOne({ 
+    "_id": mongojs.ObjectId(req.params.id)
+   })
     .then(function(dbArticle) {
       // If we were able to successfully find an Article with the given id, send it back to the client
       res.json(dbArticle);
